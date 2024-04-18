@@ -4,6 +4,9 @@ import json
 from h2oconvo_PUBLIC import get_conversation
 from random import randint as rint
 
+st.set_page_config("Fluid Phrases",
+                   "💧",)
+
 with open("prompt_template_ids.json", "r") as file:
     all_prompt_template_ids = json.load(file)
 
