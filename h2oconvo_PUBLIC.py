@@ -1,0 +1,118 @@
+
+from h2ogpte import H2OGPTE
+import streamlit as st
+GLOBAL_KEY = st.secrets['GLOBAL_KEY']
+COLLECTION_KEY_1 = st.secrets['COLLECTION_KEY_1']
+COLLECTION_KEY_2 = st.secrets['COLLECTION_KEY_2']
+
+
+def get_conversation(
+        all_prompt_template_ids,
+        person_0 = "Comedian",
+        person_1 = "Philosopher",
+        person_0_name = "Tom",
+        person_1_name = "Mike",
+        topic = "Alcohol",
+        agreeability = -2,
+        conversation_sequence = [0,1,0,1,0],
+            ):
+    
+    general_client = H2OGPTE(
+        address='https://h2ogpte.genai.h2o.ai',
+        api_key=GLOBAL_KEY,)
+    client_0 = H2OGPTE(
+        address='https://h2ogpte.genai.h2o.ai',
+        api_key=COLLECTION_KEY_1,)
+    client_1 = H2OGPTE(
+        address='https://h2ogpte.genai.h2o.ai',
+        api_key=COLLECTION_KEY_2,)
+    
+    c0_chat_session_id = client_0.create_chat_session_on_default_collection()
+    c1_chat_session_id = client_1.create_chat_session_on_default_collection()
+
+    ptid_0 = all_prompt_template_ids[person_0]
+    ptid_1 = all_prompt_template_ids[person_1]
+    
+    c0_prompted_chat_session_id = general_client.set_chat_session_prompt_template(chat_session_id=c0_chat_session_id,
+                                                    prompt_template_id=ptid_0)
+
+    c1_prompted_chat_session_id = general_client.set_chat_session_prompt_template(chat_session_id=c1_chat_session_id,
+                                                    prompt_template_id=ptid_1)
+    
+    do_not_reveal_prompt = '''
+    In your responses, do not reveal that you are obtaining information from external sources. 
+    Instead, I want you to synthesize the information and generate insights as if the knowledge and perspectives were your own. 
+    Avoid phrases like 'according to the text' or 'the author states.' 
+    Simply express the relevant ideas directly using your own voice and writing style.'''
+
+    #! TODO: INTEGRATE WITH OTHER DEFAULT PROMPT/RETRIEVE FROM PROMPT TEMPLATES.JSON
+    conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to win the argument."
+    conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0} trying to win the argument."
+
+    topic_prompt = f'''
+    What are your thoughts on {topic}? 
+    {do_not_reveal_prompt}
+    Start the conversation off with no more than 5 sentences.'''
+
+    reply_prompt = f'''You are currently engaged in conversation. 
+    {do_not_reveal_prompt}
+    For your reply, take an agreeableness level of {agreeability}, where 1 is highly disagreeable/critical and 10 is highly agreeable/affirming.
+    Reply to what your conversation partner said without parroting or repeating their points, with no more than 5 conversational sentences: '''
+
+    same_speaker_prompt = '''Thank you for providing your thoughts on this topic. 
+    I appreciate you laying out your perspective. However, I'd be interested in hearing you expand on your reasoning and analysis in more depth:
+    Are there any potential counterpoints or opposing views you considered as you formed your stance? 
+    If so, what made you ultimately disagree with or discount those perspectives?
+    Do this in 5 sentences or less.'''
+    llm_args = {
+        # "temperature" : 1,
+        "seed" : 42, 
+        # "min_max_new_tokens":0,
+    }
+
+    conversation = []
+    
+    with client_0.connect(c0_prompted_chat_session_id) as session_0:
+        with client_1.connect(c1_prompted_chat_session_id) as session_1:
+            person_array = [[session_0, person_0, conver_0], 
+                            [session_1, person_1, conver_1]]
+
+            previous_speaker = None
+            previous_content = None
+            for i, subject in enumerate(conversation_sequence):
+                client_array = person_array[subject]
+                if i == 0: # start conversation prompt
+                    reply = client_array[0].query(
+                        client_array[2]+topic_prompt, 
+                        timeout=120,
+                        # system_prompt=client_array[2],
+                        # pre_prompt_query=common_pre_prompt_query,
+                        # prompt_query=common_prompt_query,
+                        # llm_args=llm_args
+                    )
+
+                elif previous_speaker == subject: # same speaker continue speaking prompt
+                    reply = client_array[0].query(
+                        client_array[2]+same_speaker_prompt+previous_content, 
+                        timeout=120,
+                        # system_prompt=philosopher_prompt, 
+                        # pre_prompt_query=common_pre_prompt_query,
+                        # prompt_query=common_prompt_query,
+                        llm_args=llm_args
+                    )
+                
+                else: # reply to partner prompt
+                    reply = client_array[0].query(
+                        client_array[2]+reply_prompt+previous_content, 
+                        timeout=120,
+                        # system_prompt=philosopher_prompt,
+                        # pre_prompt_query=common_pre_prompt_query,
+                        # prompt_query=common_prompt_query,
+                        llm_args=llm_args
+                    )
+                previous_content = reply.content
+                previous_speaker = subject
+
+                conversation.append([previous_speaker, previous_content])
+                
+    return conversation, person_array
