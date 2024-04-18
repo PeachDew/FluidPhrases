@@ -92,8 +92,6 @@ def reset_convo():
         del st.session_state['person_array']
 CHAT_ORDER = [0,1,0,1,0]
 if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
-    if 'topic' not in st.session_state:
-        st.session_state['topic'] = ":red[Unset]"
     c1, c2 = st.columns(2)
     with c1:
         st.markdown("### Tom's Personality")
@@ -112,16 +110,17 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                                     on_change=reset_convo)
         MODEL_ID_TO_MODEL[1] = personality_2.split()
 
-    topic_title = st.title(f"Current Topic: {st.session_state.topic}")
     with st.sidebar:
         st.info(f"Hi {st.session_state.user_name}{st.session_state.user_icon}!")
         topic_prompt = st.chat_input("Enter a conversation topic.")
 
     if topic_prompt:
         st.session_state['topic'] = topic_prompt
+    else:
+        st.markdown(":orange[Topic not set, enter one on the right!]")
 
     if 'topic' in st.session_state:
-        topic_title.title(f"Current Topic: {st.session_state.topic}")
+        st.title(f"Current Topic: {st.session_state.topic}")
         chat_order_input = st.text_input("(Optional) Enter a conversation sequence, 0 for Tom, 1 for Mike.",
                                          placeholder="0, 1, 0, 1, 0")
         
