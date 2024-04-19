@@ -191,6 +191,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                     convo, pa = convopa
                     with st.expander(f"Conversation {i}"):
                         for j, c in enumerate(convo):
+                            st.text(c)
                             speaker_id, content = c
                             speaker = pa[speaker_id][1]
                             m = MODEL_ID_TO_MODEL[speaker_id]
