@@ -60,6 +60,7 @@ def get_conversation(
     Reply with a conversational sentence, include a question for them if appropriate. This is what they said: '''
 
     same_speaker_prompt = '''Thank you for providing your thoughts on this topic. Add an additional sentence that strengthens your argument further.:'''
+    wrap_up_prompt = '''You are wrapping up the conversation. Do it conversationally and succintly with not more than 3 sentences. This was the last thing they said: '''
     
     llm_args = {
         # "temperature" : 1,
@@ -86,6 +87,11 @@ def get_conversation(
                         # pre_prompt_query=common_pre_prompt_query,
                         # prompt_query=common_prompt_query,
                         # llm_args=llm_args
+                    )
+                elif i == (len(conversation_sequence) - 1): # Last speaker
+                    reply = client_array[0].query(
+                        client_array[2]+wrap_up_prompt+previous_content, 
+                        timeout=120,
                     )
 
                 elif previous_speaker == subject: # same speaker continue speaking prompt
