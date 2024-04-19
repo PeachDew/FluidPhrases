@@ -46,24 +46,21 @@ def get_conversation(
     Simply express the relevant ideas directly using your own voice and writing style.'''
 
     #! TODO: INTEGRATE WITH OTHER DEFAULT PROMPT/RETRIEVE FROM PROMPT TEMPLATES.JSON
-    conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to win the argument."
-    conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0} trying to win the argument."
+    conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to validate your own stance."
+    conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0} trying to validate your own stance."
 
     topic_prompt = f'''
     What are your thoughts on {topic}? 
     {do_not_reveal_prompt}
-    Start the conversation off with no more than 5 sentences.'''
+    Start the conversation off with 2 sentences, including a question.'''
 
     reply_prompt = f'''You are currently engaged in conversation. 
     {do_not_reveal_prompt}
     For your reply, take an agreeableness level of {agreeability}, where 1 is highly disagreeable/critical and 10 is highly agreeable/affirming.
-    Reply to what your conversation partner said without parroting or repeating their points, with no more than 5 conversational sentences: '''
+    Reply with a conversational sentence, include a question for them if appropriate. This is what they said: '''
 
-    same_speaker_prompt = '''Thank you for providing your thoughts on this topic. 
-    I appreciate you laying out your perspective. However, I'd be interested in hearing you expand on your reasoning and analysis in more depth:
-    Are there any potential counterpoints or opposing views you considered as you formed your stance? 
-    If so, what made you ultimately disagree with or discount those perspectives?
-    Do this in 5 sentences or less.'''
+    same_speaker_prompt = '''Thank you for providing your thoughts on this topic. Add an additional sentence that strengthens your argument further.:'''
+    
     llm_args = {
         # "temperature" : 1,
         "seed" : 42, 
