@@ -124,7 +124,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
         st.markdown(":orange[Topic not set, enter one on the right!]")
 
     if 'topic' in st.session_state:
-        st.markdown(":yellow[# Current Topic: ]")
+        st.markdown("## :grey[Current Topic: ]")
         with st.container(border=True):
             st.markdown(f"#### {st.session_state.topic}")
         chat_order_input = st.text_input("(Optional) Enter a conversation sequence, 0 for Tom, 1 for Mike.",
