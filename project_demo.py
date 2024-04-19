@@ -188,8 +188,8 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
         with past_convo:
             if "past_conversations" in st.session_state:
                 for i, convopa in enumerate(st.session_state.past_conversations):
-                    convo, pa = convopa
-                    st.text(convopa)
+                    convo = convopa['conversation']
+                    pa = convopa['person_array']
                     with st.expander(f"Conversation {i}"):
                         for j, c in enumerate(convo):
                             st.text(c)
