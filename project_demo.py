@@ -130,8 +130,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
 
     if 'topic' in st.session_state:
         st.markdown("##### Current Topic: ")
-        with st.container(border=True):
-            st.markdown(f"#### :orange[{st.session_state.topic}]")
+        st.markdown(f"#### :orange[{st.session_state.topic}]")
 
         with st.expander("Optional Settings"):
             os1, os2 = st.columns(2)
@@ -163,12 +162,13 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                         st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Current order: {CHAT_ORDER}]")
             with os2:
                 seed_input = st.text_input("Seed", placeholder="42")
-                if seed_input.isdigit():
-                    SEED = int(seed_input)
-                    st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Seed set to: {SEED}]")
-                else: 
-                    SEED = 42
-                    st.markdown(":red[Invalid seed entered, using default: 42]")
+                if seed_input:
+                    if seed_input.isdigit():
+                        SEED = int(seed_input)
+                        st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Seed set to: {SEED}]")
+                    else: 
+                        SEED = 42
+                        st.markdown(":red[Invalid seed entered, using default: 42]")
 
                 
 
