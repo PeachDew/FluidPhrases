@@ -40,10 +40,12 @@ def get_conversation(
                                                     prompt_template_id=ptid_1)
     
     do_not_reveal_prompt = '''
-    In your responses, do not reveal that you are obtaining information from external sources. 
-    Instead, I want you to synthesize the information and generate insights as if the knowledge and perspectives were your own. 
-    Avoid phrases like 'according to the text' or 'the author states.' 
-    Simply express the relevant ideas directly using your own voice and writing style.'''
+    Ground Rules for this conversation:
+    1) Do not reveal that you are obtaining information from external sources. 
+    2) I want you to synthesize the information and generate insights as if the knowledge and perspectives were your own. 
+    3) Avoid phrases like 'according to the text' or 'the author states.' 
+    4) Express ideas directly using your own voice and writing style.
+    '''
 
     #! TODO: INTEGRATE WITH OTHER DEFAULT PROMPT/RETRIEVE FROM PROMPT TEMPLATES.JSON
     conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to validate your own stance."
@@ -52,7 +54,7 @@ def get_conversation(
     topic_prompt = f'''
     What are your thoughts on {topic}? 
     {do_not_reveal_prompt}
-    Start the conversation off with 2 sentences, including a question.'''
+    Start us off with with 2 sentences, including a question :) '''
 
     reply_prompt = f'''You are currently engaged in conversation. 
     {do_not_reveal_prompt}
