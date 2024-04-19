@@ -91,6 +91,10 @@ if 'text_history' not in st.session_state:
 
 def reset_convo():
     if 'conversation' in st.session_state:
+        if 'past_conversations' not in st.session_state:
+            st.session_state['past_conversations'] = []
+        st.session_state.past_conversations.append(dict(conversation=st.session_state['conversation'], 
+                                                        person_array=st.session_state['person_array']))
         del st.session_state['conversation']
         del st.session_state['person_array']
 CHAT_ORDER = [0,1,0,1,0]
@@ -155,6 +159,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
 
         if st.button("Generate Conversation"):
             with st.spinner(SPINNER_TEXTS[rint(0,len(SPINNER_TEXTS)-1)]):
+                reset_convo()
                 conversation, person_array = get_conversation(all_prompt_template_ids=all_prompt_template_ids,
                                                               topic=st.session_state.topic,
                                                               conversation_sequence=CHAT_ORDER,
@@ -163,21 +168,26 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                 st.session_state['conversation'] = conversation
                 st.session_state['person_array'] = person_array
 
-        if "conversation" in st.session_state:
-            for i, c in enumerate(st.session_state.conversation):
-                speaker_id, content = c
-                speaker = st.session_state.person_array[speaker_id][1]
-                m = MODEL_ID_TO_MODEL[speaker_id]
+        curr_convo, past_convo = st.tabs(["Current Chat", "Past Chats"])
+        with curr_convo:
+            if "conversation" in st.session_state:
+                for i, c in enumerate(st.session_state.conversation):
+                    speaker_id, content = c
+                    speaker = st.session_state.person_array[speaker_id][1]
+                    m = MODEL_ID_TO_MODEL[speaker_id]
 
-                if speaker_id == 0:
-                    with st.container(border=True):
+                    if speaker_id == 0:
+                        with st.container(border=True):
+                            with st.chat_message(m[1]):
+                                # st.write(m[0])
+                                st.write_stream(stream_str(content))
+                    else:
                         with st.chat_message(m[1]):
                             # st.write(m[0])
                             st.write_stream(stream_str(content))
-                else:
-                    with st.chat_message(m[1]):
-                        # st.write(m[0])
-                        st.write_stream(stream_str(content))
+        with past_convo:
+            if "past_conversations" in st.session_state:
+                st.text(st.session_state.past_conversations)
         
 
 
