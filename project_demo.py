@@ -136,10 +136,10 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                 CHAT_ORDER = [0,1,0,1,0]
             else: 
                 CHAT_ORDER = chat_order
-                st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages))]}]")
+                st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]}]")
 
         if st.button("Generate Conversation"):
-            with st.spinner(SPINNER_TEXTS[rint(0,len(SPINNER_TEXTS))]):
+            with st.spinner(SPINNER_TEXTS[rint(0,len(SPINNER_TEXTS)-1)]):
                 conversation, person_array = get_conversation(all_prompt_template_ids=all_prompt_template_ids,
                                                               topic=st.session_state.topic,
                                                               conversation_sequence=CHAT_ORDER,
