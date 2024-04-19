@@ -139,6 +139,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                                                 placeholder="01010")
                 
                 if chat_order_input:
+                    reset_convo()
                     if "," in chat_order_input:
                         chat_order = [int(co.strip()) if co.strip().isdigit() else co.strip() for co in chat_order_input.split(",") ]
                         valid_co = all((i==0 or i==1) for i in chat_order)
@@ -163,6 +164,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
             with os2:
                 seed_input = st.text_input("Seed", placeholder="42")
                 if seed_input:
+                    reset_convo()
                     if seed_input.isdigit():
                         SEED = int(seed_input)
                         st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Seed set to: {SEED}]")
