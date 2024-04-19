@@ -187,9 +187,10 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                             st.write_stream(stream_str(content))
         with past_convo:
             if "past_conversations" in st.session_state:
-                for i, (convo, pa) in enumerate(st.session_state.past_conversations):
+                for i, convopa in enumerate(st.session_state.past_conversations):
+                    convo, pa = convopa
                     with st.expander(f"Conversation {i}"):
-                        for i, c in enumerate(convo):
+                        for j, c in enumerate(convo):
                             speaker_id, content = c
                             speaker = pa[speaker_id][1]
                             m = MODEL_ID_TO_MODEL[speaker_id]
