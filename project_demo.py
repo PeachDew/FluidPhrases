@@ -187,7 +187,19 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                             st.write_stream(stream_str(content))
         with past_convo:
             if "past_conversations" in st.session_state:
-                st.text(st.session_state.past_conversations)
+                for i, (convo, pa) in enumerate(st.session_state.past_conversations):
+                    with st.expander(f"Conversation {i}"):
+                        for i, c in enumerate(convo):
+                            speaker_id, content = c
+                            speaker = pa[speaker_id][1]
+                            m = MODEL_ID_TO_MODEL[speaker_id]
+                            if speaker_id == 0:
+                                with st.container(border=True):
+                                    with st.chat_message(m[1]):
+                                        st.text(content)
+                            else:
+                                with st.chat_message(m[1]):
+                                    st.text(content)
         
 
 
