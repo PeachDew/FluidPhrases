@@ -126,13 +126,26 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
     if 'topic' in st.session_state:
         st.title(f"Current Topic: {st.session_state.topic}")
         chat_order_input = st.text_input("(Optional) Enter a conversation sequence, 0 for Tom, 1 for Mike.",
-                                         placeholder="0, 1, 0, 1, 0")
+                                         placeholder="01010")
         
         if chat_order_input:
-            chat_order = [int(co.strip()) if co.strip().isdigit() else co.strip() for co in chat_order_input.split(",") ]
-            valid_co = all((i==0 or i==1) for i in chat_order)
+            if "," in chat_order_input:
+                chat_order = [int(co.strip()) if co.strip().isdigit() else co.strip() for co in chat_order_input.split(",") ]
+                valid_co = all((i==0 or i==1) for i in chat_order)
+            else:
+                valid_co = True
+                chat_order = []
+                for ch in chat_order_input:
+                    if ch == "0":
+                        chat_order.append(0)
+                    elif ch == "1":
+                        chat_order.append(1)
+                    else: 
+                        valid_co = False
+                        break
+                
             if not valid_co: 
-                st.markdown(":red[Invalid Chat Order is entered, using default: 0,1,0,1,0]")
+                st.markdown(":red[Invalid Chat Order is entered, using default: 01010]")
                 CHAT_ORDER = [0,1,0,1,0]
             else: 
                 CHAT_ORDER = chat_order
