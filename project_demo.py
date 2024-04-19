@@ -168,7 +168,25 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                 st.session_state['conversation'] = conversation
                 st.session_state['person_array'] = person_array
 
-        curr_convo, past_convo = st.tabs(["Current Chat", "Past Chats"])
+        curr_convo, past_convo = st.tabs(["Current Chat", "Past Chats"],)
+        with past_convo:
+            if "past_conversations" in st.session_state:
+                for i, convopa in enumerate(st.session_state.past_conversations):
+                    convo = convopa['conversation']
+                    pa = convopa['person_array']
+                    with st.expander(f"Conversation {i}"):
+                        for j, c in enumerate(convo):
+                            speaker_id, content = c
+                            speaker = pa[speaker_id][1]
+                            m = MODEL_ID_TO_MODEL[speaker_id]
+                            if speaker_id == 0:
+                                with st.container(border=True):
+                                    with st.chat_message(m[1]):
+                                        st.markdown(content)
+                            else:
+                                with st.chat_message(m[1]):
+                                    st.markdown(content)
+
         with curr_convo:
             if "conversation" in st.session_state:
                 for i, c in enumerate(st.session_state.conversation):
@@ -185,24 +203,6 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                         with st.chat_message(m[1]):
                             # st.write(m[0])
                             st.write_stream(stream_str(content))
-        with past_convo:
-            if "past_conversations" in st.session_state:
-                for i, convopa in enumerate(st.session_state.past_conversations):
-                    convo = convopa['conversation']
-                    pa = convopa['person_array']
-                    with st.expander(f"Conversation {i}"):
-                        for j, c in enumerate(convo):
-                            st.text(c)
-                            speaker_id, content = c
-                            speaker = pa[speaker_id][1]
-                            m = MODEL_ID_TO_MODEL[speaker_id]
-                            if speaker_id == 0:
-                                with st.container(border=True):
-                                    with st.chat_message(m[1]):
-                                        st.text(content)
-                            else:
-                                with st.chat_message(m[1]):
-                                    st.text(content)
         
 
 
