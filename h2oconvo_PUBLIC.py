@@ -15,6 +15,7 @@ def get_conversation(
         topic = "Alcohol",
         agreeability = -2,
         conversation_sequence = [0,1,0,1,0],
+        seed = 42
             ):
     
     general_client = H2OGPTE(
@@ -66,7 +67,7 @@ def get_conversation(
     
     llm_args = {
         # "temperature" : 1,
-        "seed" : 42, 
+        "seed" : seed, 
         # "min_max_new_tokens":0,
     }
 

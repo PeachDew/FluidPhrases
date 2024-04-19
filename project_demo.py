@@ -132,31 +132,45 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
         st.markdown("##### Current Topic: ")
         with st.container(border=True):
             st.markdown(f"#### :orange[{st.session_state.topic}]")
-        chat_order_input = st.text_input("(Optional) Enter a conversation sequence, 0 for Tom, 1 for Mike.",
-                                         placeholder="01010")
-        
-        if chat_order_input:
-            if "," in chat_order_input:
-                chat_order = [int(co.strip()) if co.strip().isdigit() else co.strip() for co in chat_order_input.split(",") ]
-                valid_co = all((i==0 or i==1) for i in chat_order)
-            else:
-                valid_co = True
-                chat_order = []
-                for ch in chat_order_input:
-                    if ch == "0":
-                        chat_order.append(0)
-                    elif ch == "1":
-                        chat_order.append(1)
-                    else: 
-                        valid_co = False
-                        break
+
+        with st.expander("Optional Settings"):
+            os1, os2 = st.columns(2)
+            with os1:
+                chat_order_input = st.text_input("Conversation sequence, 0 for Tom, 1 for Mike.",
+                                                placeholder="01010")
                 
-            if not valid_co: 
-                st.markdown(":red[Invalid Chat Order is entered, using default: 01010]")
-                CHAT_ORDER = [0,1,0,1,0]
-            else: 
-                CHAT_ORDER = chat_order
-                st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]}]")
+                if chat_order_input:
+                    if "," in chat_order_input:
+                        chat_order = [int(co.strip()) if co.strip().isdigit() else co.strip() for co in chat_order_input.split(",") ]
+                        valid_co = all((i==0 or i==1) for i in chat_order)
+                    else:
+                        valid_co = True
+                        chat_order = []
+                        for ch in chat_order_input:
+                            if ch == "0":
+                                chat_order.append(0)
+                            elif ch == "1":
+                                chat_order.append(1)
+                            else: 
+                                valid_co = False
+                                break
+                        
+                    if not valid_co: 
+                        st.markdown(":red[Invalid Chat Order is entered, using default: 01010]")
+                        CHAT_ORDER = [0,1,0,1,0]
+                    else: 
+                        CHAT_ORDER = chat_order
+                        st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Current order: {CHAT_ORDER}]")
+            with os2:
+                seed_input = st.text_input("Seed", placeholder="42")
+                if seed_input.isdigit():
+                    SEED = int(seed_input)
+                    st.markdown(f":green[{affirming_messages[rint(0,len(affirming_messages)-1)]} Seed set to: {SEED}]")
+                else: 
+                    SEED = 42
+                    st.markdown(":red[Invalid seed entered, using default: 42]")
+
+                
 
         if st.button("Generate Conversation"):
             with st.spinner(SPINNER_TEXTS[rint(0,len(SPINNER_TEXTS)-1)]):
@@ -165,7 +179,9 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
                                                               topic=st.session_state.topic,
                                                               conversation_sequence=CHAT_ORDER,
                                                               person_0 = MODEL_ID_TO_MODEL[0][0],
-                                                              person_1 = MODEL_ID_TO_MODEL[1][0])
+                                                              person_1 = MODEL_ID_TO_MODEL[1][0],
+                                                              seed = SEED
+                                                              )
                 st.session_state['conversation'] = conversation
                 st.session_state['person_array'] = person_array
 
