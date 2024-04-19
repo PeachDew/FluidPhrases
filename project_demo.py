@@ -123,6 +123,7 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
 
     if topic_prompt:
         st.session_state['topic'] = topic_prompt
+        reset_convo()
     
     if 'topic' not in st.session_state:
         st.markdown(":orange[Topic not set, enter one on the right!]")
