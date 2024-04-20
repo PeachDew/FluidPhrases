@@ -38,15 +38,6 @@ personalities = [
     "Rapper 🔥",
 ]
 
-MODELS = {
-    "Comedian": lambda : "Comedian Response Hello Hello i am currently in the middle of saying something lala",
-    "Educator": lambda : "Educator Response Hello Hello i am currently in the middle of saying something lala",
-    "Lawyer": lambda : "Lawyer Response Hello Hello i am currently in the middle of saying something lala",
-    "Philosopher": lambda : "Philosopher Response Hello Hello i am currently in the middle of saying something lala",
-    "Politician": lambda : "Politician Response Hello Hello i am currently in the middle of saying something lala",
-    "Rapper": lambda : "Rapper Response Hello Hello i am currently in the middle of saying something lala",
-}
-
 MODEL_ID_TO_MODEL = {}
 SPINNER_TEXTS = [
 "Working feverishly... 🔥",
