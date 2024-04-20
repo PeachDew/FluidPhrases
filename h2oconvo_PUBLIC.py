@@ -64,7 +64,7 @@ def get_conversation(
     {do_not_reveal_prompt}
     Reply with a MAXIMUM of TWO sentences: 1 conversational sentence, and include a question for them if appropriate (Question must still be relevant to [{topic}]). This is what they said: '''
 
-    same_speaker_prompt = '''In a conversational tone, answer this with ONE SHORT additional sentence that strengthens your argument further.'''
+    same_speaker_prompt = '''ONE SHORT additional sentence that strengthens your argument further.'''
     wrap_up_prompt = '''You are wrapping up the conversation. Provide a few closing words to your partner, not using more than 3 sentences. This was the last thing they said: '''
     
     llm_args = {
