@@ -120,11 +120,13 @@ def get_conversation(
                     )
                 
                 if previous_speaker == subject: # same speaker continue speaking prompt
+                    previous_speaker = subject
+                    conversation.append([previous_speaker, reply.content])
                     previous_content += " " + reply.content
                 else:
                     previous_content = reply.content
-                previous_speaker = subject
+                    previous_speaker = subject
+                    conversation.append([previous_speaker, previous_content])
 
-                conversation.append([previous_speaker, previous_content])
                 
     return conversation, person_array
