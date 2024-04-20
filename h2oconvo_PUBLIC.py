@@ -42,11 +42,14 @@ def get_conversation(
     
     do_not_reveal_prompt = '''
     Ground Rules for this conversation:
-    1) Do not reveal that you are obtaining information from external sources. 
-    2) I want you to synthesize the information and generate insights as if the knowledge and perspectives were your own. 
-    3) Avoid phrases like 'according to the text' or 'the author states.' 
-    4) Express ideas directly using your own voice and writing style.
+    1) Try to disagree to make the conversation more exciting.
+    2) Do not reveal that you are obtaining information from external sources. 
+    3) I want you to synthesize the information and generate insights as if the knowledge and perspectives were your own. 
+    4) Avoid phrases like 'according to the text' or 'the author states.' 
+    5) Express ideas directly using your own voice and writing style.
     '''
+
+    agreeability_prompt = f"For your reply, take an agreeableness level of {agreeability}, where 1 is highly disagreeable/critical and 10 is highly agreeable/affirming."
 
     #! TODO: INTEGRATE WITH OTHER DEFAULT PROMPT/RETRIEVE FROM PROMPT TEMPLATES.JSON
     conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to validate your own stance."
@@ -59,8 +62,7 @@ def get_conversation(
 
     reply_prompt = f'''You are currently engaged in conversation. 
     {do_not_reveal_prompt}
-    For your reply, take an agreeableness level of {agreeability}, where 1 is highly disagreeable/critical and 10 is highly agreeable/affirming.
-    Reply with a conversational sentence, include a question for them if appropriate. This is what they said: '''
+    Reply with a MAXIMUM of TWO sentences: 1 conversational sentence, and include a question for them if appropriate. This is what they said: '''
 
     same_speaker_prompt = '''Thank you for providing your thoughts on this topic. Add an additional sentence that strengthens your argument further.:'''
     wrap_up_prompt = '''You are wrapping up the conversation. Do it conversationally and succintly with not more than 3 sentences. This was the last thing they said: '''
