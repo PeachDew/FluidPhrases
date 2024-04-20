@@ -128,6 +128,8 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
     if 'topic' not in st.session_state:
         st.markdown(":orange[Topic not set, enter one on the right!]")
 
+    SEED = 42
+    CHAT_ORDER = [0,1,0,1,0]
     if 'topic' in st.session_state:
         st.markdown("##### Current Topic: ")
         st.markdown(f"#### :orange[{st.session_state.topic}]")
@@ -137,7 +139,6 @@ if ('user_name' in st.session_state) and ('user_icon' in st.session_state):
             with os1:
                 chat_order_input = st.text_input("Conversation sequence, 0 for Tom, 1 for Mike.",
                                                 placeholder="01010")
-                
                 if chat_order_input:
                     reset_convo()
                     if "," in chat_order_input:
