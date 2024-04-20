@@ -66,7 +66,7 @@ def get_conversation(
 
     same_speaker_prompt = f'''
     {do_not_reveal_prompt}
-    Tell them ONE SHORT additional sentence that strengthens your argument further. (Must still be relevant to [{topic}])'''
+    Give me ONE SHORT additional conversational sentence that strengthens your argument further. (Must still be relevant to [{topic}])'''
     wrap_up_prompt = '''You are wrapping up the conversation. Provide a few closing words to your partner, not using more than 3 sentences. This was the last thing they said: '''
     
     llm_args = {
@@ -90,24 +90,19 @@ def get_conversation(
                     reply = client_array[0].query(
                         client_array[2]+topic_prompt, 
                         timeout=120,
-                        # system_prompt=client_array[2],
-                        # pre_prompt_query=common_pre_prompt_query,
-                        # prompt_query=common_prompt_query,
-                        # llm_args=llm_args
+                        llm_args=llm_args
                     )
                 elif i == (len(conversation_sequence) - 1): # Last speaker
                     reply = client_array[0].query(
                         client_array[2]+wrap_up_prompt+previous_content, 
                         timeout=120,
+                        llm_args=llm_args
                     )
 
                 elif previous_speaker == subject: # same speaker continue speaking prompt
                     reply = client_array[0].query(
                         client_array[2]+same_speaker_prompt, 
                         timeout=120,
-                        # system_prompt=philosopher_prompt, 
-                        # pre_prompt_query=common_pre_prompt_query,
-                        # prompt_query=common_prompt_query,
                         llm_args=llm_args
                     )
                 
@@ -115,9 +110,6 @@ def get_conversation(
                     reply = client_array[0].query(
                         client_array[2]+reply_prompt+previous_content, 
                         timeout=120,
-                        # system_prompt=philosopher_prompt,
-                        # pre_prompt_query=common_pre_prompt_query,
-                        # prompt_query=common_prompt_query,
                         llm_args=llm_args
                     )
                 
