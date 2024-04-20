@@ -8,12 +8,14 @@ Uses [h2oai](https://docs.h2o.ai/enterprise-h2ogpte/) and (Streamlit)[https://st
 1. Clone the repository:
 
 `git clone https://github.com/PeachDew/FluidPhrases`
+
 2. Register for an [h2Oai h2ogpte account](https://id.public.h2o.ai) to get API keys.
 
 3. Install the required dependencies:
 
 `pip install streamlit
 pip install h2ogpte==1.3.11`
+
 4. Run the Streamlit app:
 
 `python -m streamlit run your_script.py`
