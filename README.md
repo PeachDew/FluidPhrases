@@ -18,7 +18,7 @@ pip install h2ogpte==1.3.11`
 
 4. Run the Streamlit app:
 
-`python -m streamlit run your_script.py`
+`python -m streamlit run project_demo.py`
 
 ## License
 This project is licensed under the [MIT License](https://opensource.org/license/mit).
