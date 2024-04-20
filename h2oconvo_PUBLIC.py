@@ -103,7 +103,7 @@ def get_conversation(
 
                 elif previous_speaker == subject: # same speaker continue speaking prompt
                     reply = client_array[0].query(
-                        client_array[2]+same_speaker_prompt+previous_content, 
+                        client_array[2]+same_speaker_prompt, 
                         timeout=120,
                         # system_prompt=philosopher_prompt, 
                         # pre_prompt_query=common_pre_prompt_query,
