@@ -113,6 +113,8 @@ def get_conversation(
                         llm_args=llm_args
                     )
                 
+                if reply.content.startswith('"') and reply.content.endswith('"'):
+                    reply.content = reply.content[1:-1]
                 if previous_speaker == subject: # same speaker continue speaking prompt
                     previous_speaker = subject
                     conversation.append([previous_speaker, reply.content])
