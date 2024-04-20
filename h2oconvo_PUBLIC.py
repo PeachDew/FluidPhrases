@@ -52,8 +52,8 @@ def get_conversation(
     agreeability_prompt = f"For your reply, take an agreeableness level of {agreeability}, where 1 is highly disagreeable/critical and 10 is highly agreeable/affirming."
 
     #! TODO: INTEGRATE WITH OTHER DEFAULT PROMPT/RETRIEVE FROM PROMPT TEMPLATES.JSON
-    conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1} trying to validate your own stance."
-    conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0} trying to validate your own stance."
+    conver_0 = f"You are {person_0_name} the {person_0} conversing with {person_1_name} the {person_1}."
+    conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0}."
 
     topic_prompt = f'''
     What are your thoughts on {topic}? 
