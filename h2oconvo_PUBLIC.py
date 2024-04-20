@@ -56,7 +56,7 @@ def get_conversation(
     conver_1 = f"You are {person_1_name} the {person_1} conversing with {person_0_name} the {person_0}."
 
     topic_prompt = f'''
-    What are your thoughts on {topic}? 
+    What are your thoughts on [{topic}]? 
     {do_not_reveal_prompt}
     Start us off with with 2 sentences, including a question :) '''
 
