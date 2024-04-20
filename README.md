@@ -1,7 +1,7 @@
 # FluidPhrases
 FluidPhrases is a system that generates natural conversations between two Language Learning Models (LLMs) with distinct personas. This repository contains files for deploying the conversational AI system.
 
-Uses [h2oai](https://docs.h2o.ai/enterprise-h2ogpte/) and (Streamlit)[https://streamlit.io]
+Uses [h2oai](https://docs.h2o.ai/enterprise-h2ogpte/) and [Streamlit](https://streamlit.io)
 
 ## Getting Started
 
